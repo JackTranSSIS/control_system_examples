@@ -23,16 +23,20 @@ def driveXDistance(setpoint,duration):
     # loop while the timer is less than the duration input of the function.
     while(brain.timer_time(SECONDS)<duration):
         # Your code goes here!
+        currentXLocation = location.position(X,MM)
+        error = setpoint - currentXLocation
+        output = k*error
+        # Ensure the output is not more than the maximum speed
+        if(output>maxSpeed):
+            output = maxSpeed
+        elif(output<-maxSpeed):
+            output = -maxSpeed
+        brain.print(output)
+        brain.new_line()
+        drivetrain.drive(FORWARD)
+        drivetrain.set_drive_velocity(output,PERCENT)
+        # Set the direction of movement
         
-
-
-
-
-
-
-
-
-
         #VEXCode VR requires that we have a small pause in any loop we run.    
         wait(1,MSEC)
     drivetrain.stop()
