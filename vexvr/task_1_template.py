@@ -24,6 +24,17 @@ def driveXDistance(setpoint,duration):
     while(brain.timer_time(SECONDS)<duration):
         # Your code goes here!
         currentXLocation = location.position(X,MM)
+        error = setpoint - currentXLocation
+        k = 1
+        output_speed = k*error
+
+        if(output_speed > 100):
+            output_speed = 100
+        elif(output_speed < -100):
+            output_speed = -100
+        drivetrain.set_drive_velocity(output_speed, PERCENT)
+
+
         if( currentXLocation < setpoint):
             drivetrain.drive(FORWARD)
         elif (currentXLocation > setpoint):
@@ -44,9 +55,9 @@ def driveYDistance(setpoint,duration):
     while(brain.timer_time(SECONDS)<duration):
         # Your code goes here!
         currentYLocation = location.position(Y,MM)
-        if( currentYLocation < setpoint):
+        if( currentYLocation < setpoint - TOLERANCE):
             drivetrain.drive(FORWARD)
-        elif (currentYLocation > setpoint):
+        elif (currentYLocation > setpoint + TOLERANCE):
             drivetrain.drive(REVERSE)
         else:
             drivetrain.stop() 
@@ -86,6 +97,7 @@ def main():
     pen.move(DOWN)
     drivetrain.turn_to_heading(90,DEGREES,wait=True)
     driveXDistance(0,5)
+    drivetrain.set_drive_velocity(100, PERCENT)
     drivetrain.turn_to_heading(0,DEGREES,wait=True)
     driveYDistance(0,3)
     drivetrain.turn_to_heading(45,DEGREES,wait=True)
