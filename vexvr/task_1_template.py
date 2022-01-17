@@ -24,19 +24,14 @@ def driveXDistance(setpoint,duration):
     while(brain.timer_time(SECONDS)<duration):
         # Your code goes here!
         currentXLocation = location.position(X,MM)
-        error = setpoint - currentXLocation
-        output = k*error
-        # Ensure the output is not more than the maximum speed
-        if(output>maxSpeed):
-            output = maxSpeed
-        elif(output<-maxSpeed):
-            output = -maxSpeed
-        brain.print(output)
-        brain.new_line()
-        drivetrain.drive(FORWARD)
-        drivetrain.set_drive_velocity(output,PERCENT)
-        # Set the direction of movement
+        if( currentXLocation < setpoint):
+            drivetrain.drive(FORWARD)
+        elif (currentXLocation > setpoint):
+            drivetrain.drive(REVERSE)
+        else:
+            drivetrain.stop()  
         
+
         #VEXCode VR requires that we have a small pause in any loop we run.    
         wait(1,MSEC)
     drivetrain.stop()
@@ -48,11 +43,13 @@ def driveYDistance(setpoint,duration):
     # loop while the timer is less than the duration input of the function.
     while(brain.timer_time(SECONDS)<duration):
         # Your code goes here!
-        
-
-
-
-
+        currentYLocation = location.position(Y,MM)
+        if( currentYLocation < setpoint):
+            drivetrain.drive(FORWARD)
+        elif (currentYLocation > setpoint):
+            drivetrain.drive(REVERSE)
+        else:
+            drivetrain.stop() 
 
 
 
@@ -63,20 +60,20 @@ def driveYDistance(setpoint,duration):
     drivetrain.stop()
 
 
-def driveDiagonalDistance(setpoint,duration):
+def driveDiagDistance(setpoint,duration):
     # reset the timer
     brain.timer_reset()
 
     # loop while the timer is less than the duration input of the function.
     while(brain.timer_time(SECONDS)<duration):
         # Your code goes here!
-        
-
-
-
-
-
-
+        currentYLocation = location.position(Y,MM)
+        if( currentYLocation < setpoint):
+            drivetrain.drive(FORWARD)
+        elif (currentYLocation > setpoint):
+            drivetrain.drive(REVERSE)
+        else:
+            drivetrain.stop() 
 
 
 
@@ -88,7 +85,7 @@ def driveDiagonalDistance(setpoint,duration):
 def main():
     pen.move(DOWN)
     drivetrain.turn_to_heading(90,DEGREES,wait=True)
-    driveXDistance(0,3)
+    driveXDistance(0,5)
     drivetrain.turn_to_heading(0,DEGREES,wait=True)
     driveYDistance(0,3)
     drivetrain.turn_to_heading(45,DEGREES,wait=True)
